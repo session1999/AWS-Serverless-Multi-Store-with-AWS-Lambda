@@ -1,0 +1,36 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: flutter1999
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: authService
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: eu-north-1
+  environment:
+    CLIENT_ID: ${ssm:/CLIENT_ID} #Securely fetch from the system manager parameterstore
+
+
+functions:
+  SignUp:
+    handler: handlers/signUp.SignUp
+    events:
+      - httpApi:
+          path: /Sign-Up
+          method: post
+  
+
+  ConfirmedSignUp:
+    handler: handlers/confirmedUp.ConfirmedSignUp
+    events:
+      - httpApi:
+          path: /confirm-sign-up
+          method: post
+  
+
+  SigninUsers:
+    handler: handlers/signinUsers.SigninUsers
+    events:
+      - httpApi:
+          path: /sign-in
+          method: post
