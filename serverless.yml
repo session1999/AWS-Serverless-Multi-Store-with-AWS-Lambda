@@ -5,10 +5,31 @@ service: authService
 
 provider:
   name: aws
-  runtime: nodejs22.x
+  runtime: nodejs20.x
   region: eu-north-1
   environment:
     CLIENT_ID: ${ssm:/CLIENT_ID} #Securely fetch from the system manager parameterstore
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:PutItem
+    Resource:
+      - arn:aws:dynamodb:eu-north-1:717279726910:table/Users
+
+   
+resources:
+  Resources:
+    UserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Users
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+         - AttributeName: userId
+           KeyType: HASH
 
 
 functions:

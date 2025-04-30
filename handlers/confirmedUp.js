@@ -25,13 +25,13 @@ exports.ConfirmedSignUp = async(event) =>{
 
        return {
         statusCode:200,
-        body: JSON.stringify({msg: "Use successfully confirmed"})
+        body: JSON.stringify({msg: "User successfully confirmed"})
        }
     }
     catch(error){
 
         return {
-            statusCode:200,
+            statusCode:500,
             body: JSON.stringify({error: error.message}),
            }
 
