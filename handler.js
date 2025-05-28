@@ -9,9 +9,6 @@ const s3client = new S3Client({
 })
 
 //create a lambda function to generate the presigned url which will be used to upload to file to s3
-
-
-
 exports.getSignedUrl = async(event)=>{
 
 
@@ -30,7 +27,6 @@ exports.getSignedUrl = async(event)=>{
       }
 
       //create an s3 putObjectCommand with bucket key
-
       const command = new PutObjectCommand({
         Bucket:bucketName,
         Key: fileName,
@@ -38,7 +34,6 @@ exports.getSignedUrl = async(event)=>{
       });
 
       //Generate a presigned url that expires in 3600
-
       const signedUrl= await getSignedUrl(s3client, command, {expiresIn:3600});
 
       return{

@@ -7,11 +7,20 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: "eu-north-1"
+  environment:
+    DYNAMODB_TABLE: "Banners"
   iamRoleStatements:
     - Effect: Allow
       Action:
         - s3:PutObject
       Resource: arn:aws:s3:::banner-images-aptechclass-1999/*
+
+    
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Scan
+      Resource: arn:aws:dynamodb:eu-north-1:717279726910:table/Banners
 
 
 
@@ -43,3 +52,18 @@ functions:
       - httpApi:
           path: /get-upload-url
           method: post
+  getAllBanners:
+    handler: getAllBanners.getAllBanners
+    events:
+      - httpApi:
+          path: /get-upload-url
+          method: get
+
+  confirmUpload:
+    handler: confirmUpload.confirmUpload
+    events:
+      - s3:
+          bucket: banner-images-aptechclass-1999
+          event: s3:ObjectCreated:Put
+
+          existing: true
